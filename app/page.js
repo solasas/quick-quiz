@@ -14,9 +14,9 @@ export default function HomePage() {
   return (
     <main className="page-shell">
       <section className="hero">
-        <p className="eyebrow">Quiz App</p>
-        <h1>Upload Your Questions</h1>
-        <p className="hero-copy">Load a JSON file and take the quiz</p>
+        <p className="eyebrow">Interactive Assessment Platform</p>
+        <h1>Quiz Master</h1>
+        <p className="hero-copy">Create, upload, and take custom quizzes with intelligent scoring and detailed explanations</p>
       </section>
 
       {!questions ? (

@@ -6,12 +6,14 @@ export default function FileUpload({ onQuestionsLoaded }) {
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState(null);
   const [file, setFile] = useState(null);
+  const [success, setSuccess] = useState(false);
 
   const handleFileChange = (event) => {
     const selectedFile = event.target.files?.[0];
     if (selectedFile) {
       setFile(selectedFile);
       setError(null);
+      setSuccess(false);
     }
   };
 
@@ -43,8 +45,12 @@ export default function FileUpload({ onQuestionsLoaded }) {
         return;
       }
 
-      onQuestionsLoaded(data.questions);
-      setFile(null);
+      setSuccess(true);
+      setTimeout(() => {
+        onQuestionsLoaded(data.questions);
+        setFile(null);
+        setSuccess(false);
+      }, 600);
     } catch (err) {
       setError('Network error: ' + err.message);
       setUploading(false);
@@ -54,8 +60,8 @@ export default function FileUpload({ onQuestionsLoaded }) {
   return (
     <section className="upload-shell">
       <div className="upload-box">
-        <h2>📋 Upload Your Quiz</h2>
-        <p className="upload-hint">Select a JSON file to load your questions</p>
+        <h2>Upload Quiz</h2>
+        <p className="upload-hint">Select your quiz JSON file to get started</p>
 
         <form onSubmit={handleSubmit} className="upload-form">
           <label htmlFor="quiz-file" style={{ cursor: 'pointer' }}>
@@ -77,20 +83,21 @@ export default function FileUpload({ onQuestionsLoaded }) {
                 display: 'block',
               }}
             >
-              {file ? `✓ ${file.name}` : '+ Click to select a JSON file'}
+              {file ? `Selected: ${file.name}` : 'Click to select JSON file or drag & drop'}
             </div>
           </label>
 
           <button type="submit" className="primary-button" disabled={uploading || !file}>
-            {uploading ? '⏳ Uploading...' : '🚀 Start Quiz'}
+            {uploading ? 'Uploading...' : 'Start Quiz'}
           </button>
         </form>
 
-        {error && <div className="error-message">❌ {error}</div>}
+        {error && <div className="error-message">{error}</div>}
+        {success && <div style={{ color: 'var(--success)', fontWeight: 500 }}>Loaded successfully!</div>}
       </div>
 
       <div className="example-box">
-        <h3>📝 JSON Format Example</h3>
+        <h3>JSON Format Example</h3>
         <pre>{JSON.stringify(
           [
             {
@@ -98,6 +105,12 @@ export default function FileUpload({ onQuestionsLoaded }) {
               options: ['3', '4', '5', '6'],
               correctAnswer: '4',
               explanation: 'Basic arithmetic: 2 + 2 equals 4.',
+            },
+            {
+              question: 'Which are primary colors?',
+              options: ['Red', 'Green', 'Blue', 'Yellow'],
+              correctAnswer: ['Red', 'Blue', 'Yellow'],
+              explanation: 'Primary colors: Red, Blue, Yellow.',
             },
           ],
           null,
@@ -107,4 +120,3 @@ export default function FileUpload({ onQuestionsLoaded }) {
     </section>
   );
 }
-

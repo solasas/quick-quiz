@@ -53,13 +53,19 @@ export async function POST(request) {
           { status: 400, headers: { 'Content-Type': 'application/json' } }
         );
       }
-      if (!q.options.includes(q.correctAnswer)) {
-        return new Response(
-          JSON.stringify({
-            error: `Question ${i + 1}: correctAnswer must be one of the options`,
-          }),
-          { status: 400, headers: { 'Content-Type': 'application/json' } }
-        );
+
+      // Handle both single answer (string) and multiple answers (array)
+      const correctAnswers = Array.isArray(q.correctAnswer) ? q.correctAnswer : [q.correctAnswer];
+
+      for (const answer of correctAnswers) {
+        if (!q.options.includes(answer)) {
+          return new Response(
+            JSON.stringify({
+              error: `Question ${i + 1}: correctAnswer "${answer}" must be one of the options`,
+            }),
+            { status: 400, headers: { 'Content-Type': 'application/json' } }
+          );
+        }
       }
     }
 
