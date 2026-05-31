@@ -1,0 +1,33 @@
+[
+  {
+    "question": "What is the capital of France?",
+    "options": ["London", "Paris", "Berlin", "Madrid"],
+    "correctAnswer": "Paris",
+    "explanation": "Paris is the capital and largest city of France."
+  },
+  {
+    "question": "Which planet is known as the Red Planet?",
+    "options": ["Venus", "Mars", "Jupiter", "Saturn"],
+    "correctAnswer": "Mars",
+    "explanation": "Mars is often called the Red Planet due to its reddish appearance caused by iron oxide on its surface."
+  },
+  {
+    "question": "What is the smallest country in the world?",
+    "options": ["Monaco", "Vatican City", "Liechtenstein", "Malta"],
+    "correctAnswer": "Vatican City",
+    "explanation": "Vatican City is the smallest country in the world by both area and population."
+  },
+  {
+    "question": "Who wrote Romeo and Juliet?",
+    "options": ["Jane Austen", "William Shakespeare", "Charles Dickens", "Mark Twain"],
+    "correctAnswer": "William Shakespeare",
+    "explanation": "William Shakespeare wrote this famous tragedy in the late 16th century."
+  },
+  {
+    "question": "Which AWS service provides a managed relational database?",
+    "options": ["EC2", "S3", "RDS", "Lambda"],
+    "correctAnswer": "RDS",
+    "explanation": "Amazon RDS (Relational Database Service) is a managed database service that supports multiple database engines."
+  }
+]
+
