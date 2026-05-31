@@ -54,30 +54,43 @@ export default function FileUpload({ onQuestionsLoaded }) {
   return (
     <section className="upload-shell">
       <div className="upload-box">
-        <h2>Upload Quiz Questions</h2>
-        <p className="upload-hint">Upload a JSON file with your quiz questions</p>
+        <h2>📋 Upload Your Quiz</h2>
+        <p className="upload-hint">Select a JSON file to load your questions</p>
 
         <form onSubmit={handleSubmit} className="upload-form">
-          <input
-            type="file"
-            accept=".json"
-            onChange={handleFileChange}
-            disabled={uploading}
-            className="file-input"
-          />
-
-          {file && <p className="file-name">Selected: {file.name}</p>}
+          <label htmlFor="quiz-file" style={{ cursor: 'pointer' }}>
+            <input
+              id="quiz-file"
+              type="file"
+              accept=".json"
+              onChange={handleFileChange}
+              disabled={uploading}
+              className="file-input"
+              style={{ display: 'none' }}
+            />
+            <div
+              className="file-input"
+              onClick={() => document.getElementById('quiz-file').click()}
+              style={{
+                cursor: 'pointer',
+                textAlign: 'center',
+                display: 'block',
+              }}
+            >
+              {file ? `✓ ${file.name}` : '+ Click to select a JSON file'}
+            </div>
+          </label>
 
           <button type="submit" className="primary-button" disabled={uploading || !file}>
-            {uploading ? 'Uploading...' : 'Upload & Start Quiz'}
+            {uploading ? '⏳ Uploading...' : '🚀 Start Quiz'}
           </button>
         </form>
 
-        {error && <div className="error-message">{error}</div>}
+        {error && <div className="error-message">❌ {error}</div>}
       </div>
 
       <div className="example-box">
-        <h3>JSON Format Example</h3>
+        <h3>📝 JSON Format Example</h3>
         <pre>{JSON.stringify(
           [
             {

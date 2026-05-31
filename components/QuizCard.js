@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from 'react';
 
-export default function QuizCard({ questions }) {
+export default function QuizCard({ questions, onReset }) {
   const [selectedAnswers, setSelectedAnswers] = useState({});
   const [submitted, setSubmitted] = useState(false);
 
@@ -22,14 +22,15 @@ export default function QuizCard({ questions }) {
   const resetQuiz = () => {
     setSelectedAnswers({});
     setSubmitted(false);
+    onReset?.();
   };
 
   return (
     <section className="quiz-shell">
       <div className="quiz-header">
         <div>
-          <p className="eyebrow">Practice quiz</p>
-          <h2>Answer each question and submit when you’re ready.</h2>
+          <p className="eyebrow">📚 Assessment</p>
+          <h2>Answer all questions carefully</h2>
         </div>
         <div className="score-card" aria-live="polite">
           <span>Score</span>
@@ -72,7 +73,7 @@ export default function QuizCard({ questions }) {
             {submitted ? (
               <div className="explanation-box">
                 <p>
-                  <strong>Correct answer:</strong> {question.correctAnswer}
+                  <strong>✓ Correct answer:</strong> {question.correctAnswer}
                 </p>
                 <p>{question.explanation}</p>
               </div>
@@ -83,10 +84,10 @@ export default function QuizCard({ questions }) {
 
       <div className="quiz-actions">
         <button type="button" className="primary-button" onClick={() => setSubmitted(true)}>
-          Submit quiz
+          ✓ Submit Answers
         </button>
         <button type="button" className="secondary-button" onClick={resetQuiz}>
-          Reset
+          ↻ New Quiz
         </button>
       </div>
     </section>
