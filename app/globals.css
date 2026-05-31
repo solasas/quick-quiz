@@ -163,6 +163,18 @@ button {
   gap: 10px;
   text-align: center;
   transition: var(--transition);
+  animation: slideInRight 0.5s ease-out;
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
 }
 
 .score-card:hover {
@@ -626,15 +638,27 @@ button {
   color: var(--accent-primary);
 }
 
-.quiz-shell {
+.quiz-container {
   display: grid;
-  gap: 28px;
-  padding: 32px 40px;
-  border: 1px solid var(--border);
-  border-radius: 20px;
-  background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-tertiary) 100%);
-  backdrop-filter: blur(20px);
-  box-shadow: var(--shadow-lg), inset 1px 1px 0 rgba(255, 255, 255, 0.05);
+  grid-template-columns: 1fr 280px;
+  gap: 24px;
+  align-items: start;
+}
+
+.quiz-main {
+  display: flex;
+  flex-direction: column;
+}
+
+.quiz-shell {
+   display: grid;
+   gap: 28px;
+   padding: 32px 40px;
+   border: 1px solid var(--border);
+   border-radius: 20px;
+   background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-tertiary) 100%);
+   backdrop-filter: blur(20px);
+   box-shadow: var(--shadow-lg), inset 1px 1px 0 rgba(255, 255, 255, 0.05);
 }
 
 .quiz-header {
