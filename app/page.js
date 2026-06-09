@@ -13,18 +13,17 @@ export default function HomePage() {
 
   return (
     <main className="page-shell">
-      <section className="hero">
-        <p className="eyebrow">Interactive Assessment Platform</p>
-        <h1>Quiz Master</h1>
-        <p className="hero-copy">Create, upload, and take custom quizzes with intelligent scoring and detailed explanations</p>
-      </section>
-
       {!questions ? (
-        <FileUpload onQuestionsLoaded={setQuestions} />
-      ) : (
         <>
-          <QuizCard questions={questions} onReset={handleReset} />
+          <section className="hero">
+            <p className="eyebrow">Interactive Assessment Platform</p>
+            <h1>Quiz Master</h1>
+            <p className="hero-copy">Create, upload, and take custom quizzes with intelligent scoring and detailed explanations</p>
+          </section>
+          <FileUpload onQuestionsLoaded={setQuestions} />
         </>
+      ) : (
+        <QuizCard questions={questions} onReset={handleReset} />
       )}
     </main>
   );

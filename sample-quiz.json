@@ -6,10 +6,22 @@
     "explanation": "Paris is the capital and largest city of France."
   },
   {
+    "question": "Which of the following are primary colors?",
+    "options": ["Red", "Green", "Blue", "Yellow"],
+    "correctAnswer": ["Red", "Blue", "Yellow"],
+    "explanation": "Primary colors are Red, Blue, and Yellow. These cannot be created by mixing other colors."
+  },
+  {
     "question": "Which planet is known as the Red Planet?",
     "options": ["Venus", "Mars", "Jupiter", "Saturn"],
     "correctAnswer": "Mars",
     "explanation": "Mars is often called the Red Planet due to its reddish appearance caused by iron oxide on its surface."
+  },
+  {
+    "question": "Which of these are programming languages?",
+    "options": ["Python", "HTML", "JavaScript", "CSS"],
+    "correctAnswer": ["Python", "JavaScript"],
+    "explanation": "Python and JavaScript are programming languages. HTML and CSS are markup and styling languages respectively."
   },
   {
     "question": "What is the smallest country in the world?",
@@ -24,10 +36,10 @@
     "explanation": "William Shakespeare wrote this famous tragedy in the late 16th century."
   },
   {
-    "question": "Which AWS service provides a managed relational database?",
-    "options": ["EC2", "S3", "RDS", "Lambda"],
-    "correctAnswer": "RDS",
-    "explanation": "Amazon RDS (Relational Database Service) is a managed database service that supports multiple database engines."
+    "question": "Which AWS services are storage solutions?",
+    "options": ["EC2", "S3", "RDS", "EBS"],
+    "correctAnswer": ["S3", "EBS"],
+    "explanation": "S3 (Simple Storage Service) and EBS (Elastic Block Store) are AWS storage solutions. EC2 is compute and RDS is database."
   }
 ]
 

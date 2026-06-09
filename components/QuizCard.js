@@ -9,15 +9,46 @@ export default function QuizCard({ questions, onReset }) {
 
   const score = useMemo(() => {
     return questions.reduce((total, question, index) => {
-      return selectedAnswers[index] === question.correctAnswer ? total + 1 : total;
+      const correctAnswers = Array.isArray(question.correctAnswer)
+        ? question.correctAnswer
+        : [question.correctAnswer];
+      const userAnswers = selectedAnswers[index] || [];
+      const userAnswersArray = Array.isArray(userAnswers) ? userAnswers : [userAnswers];
+
+      // Check if user selected exactly the correct answers
+      const isCorrect =
+        userAnswersArray.length === correctAnswers.length &&
+        userAnswersArray.every((answer) => correctAnswers.includes(answer)) &&
+        correctAnswers.every((answer) => userAnswersArray.includes(answer));
+
+      return isCorrect ? total + 1 : total;
     }, 0);
   }, [questions, selectedAnswers]);
 
+  const isMultipleChoice = (question) => Array.isArray(question.correctAnswer);
+
   const answerQuestion = (questionIndex, answer) => {
-    setSelectedAnswers((current) => ({
-      ...current,
-      [questionIndex]: answer,
-    }));
+    const question = questions[questionIndex];
+    const isMultiple = isMultipleChoice(question);
+
+    if (isMultiple) {
+      // Multiple choice: toggle selection
+      const currentAnswers = selectedAnswers[questionIndex] || [];
+      const updatedAnswers = currentAnswers.includes(answer)
+        ? currentAnswers.filter((a) => a !== answer)
+        : [...currentAnswers, answer];
+
+      setSelectedAnswers((current) => ({
+        ...current,
+        [questionIndex]: updatedAnswers,
+      }));
+    } else {
+      // Single choice: replace selection
+      setSelectedAnswers((current) => ({
+        ...current,
+        [questionIndex]: answer,
+      }));
+    }
   };
 
   const resetQuiz = () => {
@@ -43,8 +74,29 @@ export default function QuizCard({ questions, onReset }) {
     setCurrentQuestion(index);
   };
 
+  const isQuestionCorrect = (questionIndex) => {
+    const question = questions[questionIndex];
+    const correctAnswers = Array.isArray(question.correctAnswer)
+      ? question.correctAnswer
+      : [question.correctAnswer];
+    const userAnswers = selectedAnswers[questionIndex] || [];
+    const userAnswersArray = Array.isArray(userAnswers) ? userAnswers : [userAnswers];
+
+    return (
+      userAnswersArray.length === correctAnswers.length &&
+      userAnswersArray.every((answer) => correctAnswers.includes(answer)) &&
+      correctAnswers.every((answer) => userAnswersArray.includes(answer))
+    );
+  };
+
   const question = questions[currentQuestion];
   const isAnswered = selectedAnswers.hasOwnProperty(currentQuestion);
+  const isMultiple = isMultipleChoice(question);
+  const correctAnswers = Array.isArray(question.correctAnswer)
+    ? question.correctAnswer
+    : [question.correctAnswer];
+  const userAnswers = selectedAnswers[currentQuestion] || [];
+  const userAnswersArray = Array.isArray(userAnswers) ? userAnswers : [userAnswers];
 
   return (
     <section className="quiz-container">
@@ -70,12 +122,15 @@ export default function QuizCard({ questions, onReset }) {
             <article className="question-card">
               <h3>
                 {currentQuestion + 1}. {question.question}
+                {isMultiple && <span className="multiple-badge">Select all that apply</span>}
               </h3>
 
               <div className="option-list">
                 {question.options.map((option) => {
-                  const isSelected = selectedAnswers[currentQuestion] === option;
-                  const isCorrect = option === question.correctAnswer;
+                  const isSelected = isMultiple
+                    ? userAnswersArray.includes(option)
+                    : userAnswersArray[0] === option;
+                  const isCorrect = correctAnswers.includes(option);
                   const showCorrectState = submitted && isCorrect;
                   const showWrongState = submitted && isSelected && !isCorrect;
 
@@ -98,7 +153,12 @@ export default function QuizCard({ questions, onReset }) {
               {submitted ? (
                 <div className="explanation-box">
                   <p>
-                    <strong>✓ Correct answer:</strong> {question.correctAnswer}
+                    <strong>✓ Correct answer{correctAnswers.length > 1 ? 's' : ''}:</strong>{' '}
+                    {correctAnswers.join(', ')}
+                  </p>
+                  <p>
+                    <strong>Your answer{userAnswersArray.length !== 1 ? 's' : ''}:</strong>{' '}
+                    {userAnswersArray.length > 0 ? userAnswersArray.join(', ') : 'Not answered'}
                   </p>
                   <p>{question.explanation}</p>
                 </div>
@@ -143,9 +203,9 @@ export default function QuizCard({ questions, onReset }) {
           <h3 className="panel-title">Questions</h3>
           <div className="questions-grid">
             {questions.map((_, index) => {
-              const isAnswered = selectedAnswers.hasOwnProperty(index);
-              const isCorrect = submitted && selectedAnswers[index] === questions[index].correctAnswer;
-              const isWrong = submitted && isAnswered && !isCorrect;
+              const isAnsweredQuestion = selectedAnswers.hasOwnProperty(index);
+              const isCorrect = submitted && isQuestionCorrect(index);
+              const isWrong = submitted && isAnsweredQuestion && !isCorrect;
               const isCurrent = currentQuestion === index;
 
               return (
@@ -153,10 +213,10 @@ export default function QuizCard({ questions, onReset }) {
                   key={index}
                   type="button"
                   className={`question-number ${isCurrent ? 'current' : ''} ${
-                    isAnswered ? 'answered' : ''
+                    isAnsweredQuestion ? 'answered' : ''
                   } ${isCorrect ? 'correct' : ''} ${isWrong ? 'wrong' : ''}`}
                   onClick={() => goToQuestion(index)}
-                  title={`Question ${index + 1}${isAnswered ? ' - Answered' : ''}`}
+                  title={`Question ${index + 1}${isAnsweredQuestion ? ' - Answered' : ''}`}
                 >
                   {index + 1}
                 </button>
