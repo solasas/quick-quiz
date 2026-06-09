@@ -61,3 +61,4 @@ A sample quiz is provided in `sample-quiz.json` that you can use as a template.
 - `npm run lint` — run Next.js linting
 
 # quick-quiz
+
